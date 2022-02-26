@@ -9,7 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 
 class tsBuilder:
-    def __init__(self, fpath, start_date="2010-01-01", end_date="2015-01-01"):
+    def __init__(self, fpath, start_date="2010-01-01", end_date="2018-01-01"):
         self.fpath = fpath # absolute path to directory of .txt data
         self.dtformat = "%Y%m%d"
         self.start_date = dt.datetime.strptime(start_date, "%Y-%m-%d")
@@ -29,24 +29,44 @@ class tsBuilder:
         all_files = glob.glob(self.fpath + f"/*{extension}") # grab all files in directory
         return {os.path.basename(v):v for v in all_files}
 
-    def compare_etfs(self, symbol1, symbol2):
+    def compare_etfs(self, symbol1, symbol2, show_full_period=False, show_plot=True):
         dfs = []
         for symbol in [symbol1, symbol2]:
             df = pd.read_csv(self.fpath + symbol)
             df["Date"] = pd.to_datetime(df["Date"], format=self.dtformat)
             df = df.set_index("Date", drop=True) # format date and set as datetimeindex
             df[symbol] = df["Close"]
-            dfs.append(df[symbol][self.start_date:self.end_date])
+            
+            if show_full_period:
+                df = df[symbol]
+            else:
+                df = df[symbol][self.start_date:self.end_date]
+
+            dfs.append(df)
 
         cat = pd.concat(dfs, axis=1)
-
-        fig, ax = plt.subplots(2)
-        cat[symbol1].plot(ax=ax[0], title=symbol1, color="red")
-        cat[symbol2].plot(ax=ax[1], title=symbol2, color="blue")
-        plt.show()
+        if show_plot:
+            fig, ax = plt.subplots(2)
+            cat[symbol1].plot(ax=ax[0], title=symbol1, color="red")
+            cat[symbol2].plot(ax=ax[1], title=symbol2, color="blue")
+            plt.show()
+        
+        return cat
 
     def check_cointegration(self, symbol1, symbol2):
-        pass
+        cat = self.compare_etfs(symbol1, symbol2, show_plot=False)
+
+        hedge_ratio = np.mean(cat[symbol1]) / np.mean(cat[symbol2])
+
+        cat["Spread"] = cat[symbol1] - np.multiply(cat[symbol2],hedge_ratio) 
+
+        fig, ax = plt.subplots(3)
+        cat[symbol1].plot(ax=ax[0], title=symbol1, color="red")
+        cat[symbol2].plot(ax=ax[1], title=symbol2, color="blue")
+        cat["Spread"].plot(ax=ax[2], title="Spread Series", color="green")
+        #plt.tight_layout()
+        plt.show()
+
 
     def is_in_interval(self, df):
         '''
@@ -57,8 +77,9 @@ class tsBuilder:
     def build_frame(self, paths):
         frames = []
         for symbol, path in paths.items():
-
             df = pd.read_csv(path)
+            if len(df) == 0 or df["Close"].isin([0]).any(): # clean bad data
+                continue
             df["Date"] = pd.to_datetime(df["Date"], format=self.dtformat)
             df = df.set_index("Date", drop=True) # format date and set as datetimeindex
 
