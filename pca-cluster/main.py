@@ -8,9 +8,13 @@ def main(ts, pca_components, clusters):
     cluster_result = ts.cluster_kmeans(pca_df, clusters) # kmeans cluster
 
     print(cluster_result) # list of groups of similar stocks
+    
+    with open("cluster_result.txt", "w") as f:
+        f.write(str(cluster_result))
 
 if __name__ == "__main__":
-    ts = tsBuilder("/home/jerry/pca-cluster/stock_data/") # replace with absolute path to 
-    main(ts, pca_components=3, clusters=50)
+    ts = tsBuilder("/home/jerry/pca-cluster/etf_data/") # replace with absolute path to data
+    #main(ts, pca_components=3, clusters=250)
 
-    #ts.compare_etfs("DTO", "SCO") # plot pairs of stocks
+    #ts.compare_etfs("DGP", "UGL", show_full_period=True) # plot pairs of stocks
+    #ts.check_cointegration("PSP", "PIO")
