@@ -9,8 +9,13 @@ def main(ts, pca_components, clusters):
 
     print(cluster_result) # list of groups of similar stocks
 
+    with open("cluster_results.txt", "w") as f:
+        f.write(str(cluster_result))
+
 if __name__ == "__main__":
     ts = tsBuilder("/home/jerry/pca-cluster/stock_data/") # replace with absolute path to 
     main(ts, pca_components=3, clusters=50)
 
     #ts.compare_etfs("DTO", "SCO") # plot pairs of stocks
+
+
