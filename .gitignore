@@ -3,4 +3,5 @@ venv/
 *.py[cod]
 *.egg-info/
 *.egg
+.DS_Store
 .idea/
