@@ -3,7 +3,7 @@
 #### Authors: Jerry Loh @jlohding, Lian Kah Seng @sunroofgod
 
 ### About
-- View the source code [here](main.html)
+- View the source code [here](main.ipynb)
 - In this project, we attempt to search for pairs of securities suitable for a mean-reversion pairs trading strategy using machine learning methods. In particular, we apply unsupervised dimensionality reduction and clustering techniques to historical daily price data for a set of 4088 ETFs. 
   - These methods include Principal Component Analysis (PCA), k-Means Clustering, Density-Based Spatial Clustering of Applications with Noise (DBSCAN), and Hierarchical Clustering. 
 - This project is part of our graded coursework in the National University of Singapore module IT1244: Artificial Intelligence: Technology and Impact.
@@ -20,4 +20,4 @@ numpy==1.20.3
 sklearn==1.0.2
 ```
 
-Run the Jupyter Notebook [main.ipynb](main.ipynb) on your local machine or Google Colab 
+Run the Jupyter Notebook ```main.ipynb``` on your local machine or Google Colab 
