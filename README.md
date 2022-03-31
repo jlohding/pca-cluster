@@ -1,6 +1,6 @@
 # Dimensionality Reduction and Clustering for Pairs Trading Selection
 
-#### Authors: Jerry Loh [@jlohding](https://github.com/jlohding), Lian Kah Seng [@sunroofgod]((https://github.com/sunroofgod))
+#### Authors: Jerry Loh [@jlohding](https://github.com/jlohding), Lian Kah Seng [@sunroofgod](https://github.com/sunroofgod)
 
 ### About
 - View the source code [here](main.ipynb)
